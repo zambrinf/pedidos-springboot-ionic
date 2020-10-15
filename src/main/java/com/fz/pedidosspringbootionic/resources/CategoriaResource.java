@@ -17,12 +17,12 @@ import com.fz.pedidosspringbootionic.services.CategoriaService;
 public class CategoriaResource {
 	
 	@Autowired
-	private CategoriaService categoriaService;
+	private CategoriaService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Categoria>> findAll() {
 		
-		List<Categoria> obj = categoriaService.findAll();
+		List<Categoria> obj = service.findAll();
 		
 		return ResponseEntity.ok().body(obj);
 	}
@@ -32,8 +32,7 @@ public class CategoriaResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
 		
-		Categoria obj = categoriaService.findById(id);
-		
+		Categoria obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
