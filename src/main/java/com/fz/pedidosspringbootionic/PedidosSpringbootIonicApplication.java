@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fz.pedidosspringbootionic.domain.Categoria;
 import com.fz.pedidosspringbootionic.domain.Cidade;
+import com.fz.pedidosspringbootionic.domain.Cliente;
+import com.fz.pedidosspringbootionic.domain.Endereco;
 import com.fz.pedidosspringbootionic.domain.Estado;
 import com.fz.pedidosspringbootionic.domain.Produto;
+import com.fz.pedidosspringbootionic.domain.enums.TipoCliente;
 import com.fz.pedidosspringbootionic.repositories.CategoriaRepository;
 import com.fz.pedidosspringbootionic.repositories.CidadeRepository;
+import com.fz.pedidosspringbootionic.repositories.ClienteRepository;
+import com.fz.pedidosspringbootionic.repositories.EnderecoRepository;
 import com.fz.pedidosspringbootionic.repositories.EstadoRepository;
 import com.fz.pedidosspringbootionic.repositories.ProdutoRepository;
 
@@ -22,25 +27,21 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		
 		SpringApplication.run(PedidosSpringbootIonicApplication.class, args);
-		
-		
-		
+
 	}
-	
-	
-	
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	//Command Line Runner - na iniciação - Mock
 	@Override
@@ -76,6 +77,17 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail", "33333333333", TipoCliente.PESSOA_FISICA);
+		cli1.getTelefones().addAll(Arrays.asList("33222335","33223322"));
+		
+		Endereco e1 = new Endereco(null, "Rua flores", "100", "ap 101", "jardim", "38241456", cli1, c1);
+		Endereco e2 = new Endereco(null, "av matos", "102", "sala 501", "Centro", "3423432", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.save(cli1);
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 	}
 
