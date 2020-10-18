@@ -1,5 +1,6 @@
 package com.fz.pedidosspringbootionic;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.fz.pedidosspringbootionic.domain.Cidade;
 import com.fz.pedidosspringbootionic.domain.Cliente;
 import com.fz.pedidosspringbootionic.domain.Endereco;
 import com.fz.pedidosspringbootionic.domain.Estado;
+import com.fz.pedidosspringbootionic.domain.Pagamento;
+import com.fz.pedidosspringbootionic.domain.PagamentoComBoleto;
+import com.fz.pedidosspringbootionic.domain.PagamentoComCartao;
+import com.fz.pedidosspringbootionic.domain.Pedido;
 import com.fz.pedidosspringbootionic.domain.Produto;
+import com.fz.pedidosspringbootionic.domain.enums.EstadoPagamento;
 import com.fz.pedidosspringbootionic.domain.enums.TipoCliente;
 import com.fz.pedidosspringbootionic.repositories.CategoriaRepository;
 import com.fz.pedidosspringbootionic.repositories.CidadeRepository;
 import com.fz.pedidosspringbootionic.repositories.ClienteRepository;
 import com.fz.pedidosspringbootionic.repositories.EnderecoRepository;
 import com.fz.pedidosspringbootionic.repositories.EstadoRepository;
+import com.fz.pedidosspringbootionic.repositories.PagamentoRepository;
+import com.fz.pedidosspringbootionic.repositories.PedidoRepository;
 import com.fz.pedidosspringbootionic.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -42,6 +50,10 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	//Command Line Runner - na iniciação - Mock
 	@Override
@@ -88,6 +100,26 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 		
 		clienteRepository.save(cli1);
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6); // id vai ser gerado pelo jpa
+		
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
 		
 	}
 
