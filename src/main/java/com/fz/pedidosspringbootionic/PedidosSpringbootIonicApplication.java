@@ -65,6 +65,8 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 		
 		Categoria cat1 = new Categoria(null, "Informatica");
 		Categoria cat2 = new Categoria(null, "Escritorio");
+
+		System.out.println(cat1);
 		
 		Produto p1 = new Produto(null, "computador", 2000.00);
 		Produto p2 = new Produto(null, "impressora", 800.00);

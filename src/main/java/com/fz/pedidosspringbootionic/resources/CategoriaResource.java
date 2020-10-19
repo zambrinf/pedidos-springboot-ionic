@@ -2,7 +2,9 @@ package com.fz.pedidosspringbootionic.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.fz.pedidosspringbootionic.dto.CategoriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,11 +28,10 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Categoria>> findAll() {
-		
-		List<Categoria> obj = service.findAll();
-		
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> list = service.findAll();
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
