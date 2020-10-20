@@ -1,18 +1,18 @@
 package com.fz.pedidosspringbootionic.resources;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.fz.pedidosspringbootionic.domain.Categoria;
 import com.fz.pedidosspringbootionic.dto.CategoriaDTO;
+import com.fz.pedidosspringbootionic.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fz.pedidosspringbootionic.domain.Categoria;
-import com.fz.pedidosspringbootionic.services.CategoriaService;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -36,16 +36,18 @@ public class CategoriaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+
+		Categoria obj = service.fromDto(objDto);
 		obj = service.insert(obj);
-		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri(); //pega a uri do novo recurso
 			
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody Categoria obj) {
+	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO objDto) {
+		Categoria obj = service.fromDto(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
