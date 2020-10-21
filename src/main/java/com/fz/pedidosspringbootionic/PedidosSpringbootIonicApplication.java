@@ -39,7 +39,7 @@ public class PedidosSpringbootIonicApplication implements CommandLineRunner {
 		SpringApplication.run(PedidosSpringbootIonicApplication.class, args);
 
 	}
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
