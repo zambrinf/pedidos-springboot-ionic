@@ -48,8 +48,8 @@ public class Cliente implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod(); //alterado
+		this.cpfOuCnpj = (cpfOuCnpj == null) ? null : cpfOuCnpj;
+		this.tipo = (tipo == null) ? null : tipo.getCod(); //alterado
 	}
 
 	public Integer getId() {
