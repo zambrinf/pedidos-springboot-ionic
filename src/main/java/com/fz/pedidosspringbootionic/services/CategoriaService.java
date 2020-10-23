@@ -3,6 +3,7 @@ package com.fz.pedidosspringbootionic.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.fz.pedidosspringbootionic.domain.Cliente;
 import com.fz.pedidosspringbootionic.dto.CategoriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,10 +40,13 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
+		Categoria newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return repository.save(newObj);
+	}
 
-		findById(obj.getId());
-
-		return repository.save(obj);
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 
 	public void deleteById(Integer id) {
