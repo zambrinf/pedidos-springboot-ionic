@@ -98,6 +98,10 @@ public class Pedido implements Serializable {
 		return itens;
 	}
 
+	public double getValorTotal() {
+		return itens.stream().mapToDouble(ItemPedido::getSubtotal).sum();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
