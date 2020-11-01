@@ -25,6 +25,5 @@ public class PedidoService {
 	public List<Pedido> findAll() {
 		return repository.findAll();
 	}
-	
-	
+
 }
