@@ -2,6 +2,7 @@ package com.fz.pedidosspringbootionic.resources;
 
 import com.fz.pedidosspringbootionic.domain.Cliente;
 import com.fz.pedidosspringbootionic.dto.ClienteDTO;
+import com.fz.pedidosspringbootionic.dto.ClienteNewDTO;
 import com.fz.pedidosspringbootionic.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,13 +31,12 @@ public class ClienteResource {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
-
 		Cliente obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 
 		Cliente obj = service.fromDto(objDto);
 		obj = service.insert(obj);
