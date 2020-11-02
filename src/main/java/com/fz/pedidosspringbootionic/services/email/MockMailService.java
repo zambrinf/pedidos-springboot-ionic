@@ -1,32 +1,20 @@
 package com.fz.pedidosspringbootionic.services.email;
 
-import com.fz.pedidosspringbootionic.domain.Pedido;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
-@Component
-public class MockMailService implements EmailService {
 
-    @Value("${default.sender}")
-    private String sender;
+public class MockMailService extends AbstractEmailService {
 
-    @Value("${default.recipient}")
-    private String recipient;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockMailService.class);
 
-    @Autowired
-    private JavaMailSender emailSender;
 
     @Override
-    public void sendOrderConfirmationEmail(Pedido pedido) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(sender);
-        message.setTo(recipient);
-        message.setSubject("Confirmação do Pedido: " + pedido.getId());
-        message.setText(pedido.toString());
-        emailSender.send(message);
+    public void sendEmail(SimpleMailMessage smm) {
+        LOGGER.info("Simulando envio de email...");
+        LOGGER.info(smm.toString());
+        LOGGER.info("Enviado com sucesso");
     }
 
 }
