@@ -11,6 +11,9 @@ public abstract class AbstractEmailService implements EmailService {
     @Value("${default.sender}")
     private String sender;
 
+    @Value("${default.recipient}")
+    private String recipient;
+
     @Autowired
     protected JavaMailSender javaMailSender;
 
@@ -19,7 +22,7 @@ public abstract class AbstractEmailService implements EmailService {
     public void sendOrderConfirmationEmail(Pedido pedido) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
-        message.setTo(pedido.getCliente().getEmail());
+        message.setTo(recipient);
         message.setSubject("Confirmação do Pedido: " + pedido.getId());
         message.setText(pedido.toString());
         sendEmail(message);
