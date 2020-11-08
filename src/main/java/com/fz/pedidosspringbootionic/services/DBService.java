@@ -2,6 +2,7 @@ package com.fz.pedidosspringbootionic.services;
 
 import com.fz.pedidosspringbootionic.domain.*;
 import com.fz.pedidosspringbootionic.domain.enums.EstadoPagamento;
+import com.fz.pedidosspringbootionic.domain.enums.Perfil;
 import com.fz.pedidosspringbootionic.domain.enums.TipoCliente;
 import com.fz.pedidosspringbootionic.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,15 +100,22 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail", "33333333333", TipoCliente.PESSOA_FISICA, pe.encode("123"));
+        Cliente cli2 = new Cliente(null, "Felipe", "felipe@fakemail.com", "00143480049", TipoCliente.PESSOA_FISICA, pe.encode("123"));
+        cli2.addPerfil(Perfil.ADMIN);
+
         cli1.getTelefones().addAll(Arrays.asList("33222335","33223322"));
+        cli2.getTelefones().addAll(Arrays.asList("33222331","33223321"));
 
         Endereco e1 = new Endereco(null, "Rua flores", "100", "ap 101", "jardim", "38241456", cli1, c1);
         Endereco e2 = new Endereco(null, "av matos", "102", "sala 501", "Centro", "3423432", cli1, c2);
 
-        cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+        Endereco e3 = new Endereco(null, "av gov", "606", null, "Centro", "86000000", cli2, c2);
 
-        clienteRepository.save(cli1);
-        enderecoRepository.saveAll(Arrays.asList(e1,e2));
+        cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
+
+        clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
