@@ -3,11 +3,14 @@ package com.fz.pedidosspringbootionic.services;
 import com.fz.pedidosspringbootionic.domain.Cidade;
 import com.fz.pedidosspringbootionic.domain.Cliente;
 import com.fz.pedidosspringbootionic.domain.Endereco;
+import com.fz.pedidosspringbootionic.domain.enums.Perfil;
 import com.fz.pedidosspringbootionic.domain.enums.TipoCliente;
 import com.fz.pedidosspringbootionic.dto.ClienteDTO;
 import com.fz.pedidosspringbootionic.dto.ClienteNewDTO;
 import com.fz.pedidosspringbootionic.repositories.ClienteRepository;
 import com.fz.pedidosspringbootionic.repositories.EnderecoRepository;
+import com.fz.pedidosspringbootionic.security.UserSS;
+import com.fz.pedidosspringbootionic.services.exceptions.AuthorizationException;
 import com.fz.pedidosspringbootionic.services.exceptions.DataIntegrityException;
 import com.fz.pedidosspringbootionic.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,11 @@ public class ClienteService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public Cliente findById(Integer id) {
+
+		UserSS user = UserSevice.getAuthenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
 
 		Optional<Cliente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
