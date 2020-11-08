@@ -32,19 +32,19 @@ public class Cliente implements Serializable {
 	private String senha;
 	
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+	private final List<Endereco> enderecos = new ArrayList<>();
 	
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
-	private Set<String> telefones = new HashSet<>();
+	private final Set<String> telefones = new HashSet<>();
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
-	private Set<Integer> perfis = new HashSet<>();
+	private final Set<Integer> perfis = new HashSet<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
-	private List<Pedido> pedidos = new ArrayList<>(); 
+	private final List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
@@ -55,7 +55,7 @@ public class Cliente implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpfOuCnpj = (cpfOuCnpj == null) ? null : cpfOuCnpj;
+		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = (tipo == null) ? null : tipo.getCod();
 		this.senha = senha;
 		addPerfil(Perfil.CLIENTE);
@@ -149,12 +149,9 @@ public class Cliente implements Serializable {
 			return false;
 		Cliente other = (Cliente) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	};
+			return other.id == null;
+		} else return id.equals(other.id);
+	}
 
-	
+
 }

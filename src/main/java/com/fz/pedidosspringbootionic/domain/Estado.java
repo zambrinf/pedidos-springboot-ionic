@@ -24,7 +24,7 @@ public class Estado implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades = new ArrayList<>();
+	private final List<Cidade> cidades = new ArrayList<>();
 	
 	public Estado() {}
 
@@ -72,12 +72,9 @@ public class Estado implements Serializable {
 			return false;
 		Estado other = (Estado) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	};
-	
-	
+			return other.id == null;
+		} else return id.equals(other.id);
+	}
+
+
 }

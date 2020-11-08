@@ -33,14 +33,14 @@ public class Produto implements Serializable{
 	@JoinTable(name = "PRODUTO_CATEGORIA",
 				joinColumns = @JoinColumn(name = "prod_id"),
 				inverseJoinColumns = @JoinColumn(name = "cat_id"))
-	private List<Categoria> categorias = new ArrayList<>();
+	private final List<Categoria> categorias = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
-	private Set<ItemPedido> itens = new HashSet<>();
+	private final Set<ItemPedido> itens = new HashSet<>();
 	
-	public Produto() {};
-	
+	public Produto() {}
+
 	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
@@ -98,11 +98,8 @@ public class Produto implements Serializable{
 			return false;
 		Produto other = (Produto) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+			return other.id == null;
+		} else return id.equals(other.id);
 	}
 	
 	@JsonIgnore //porque tudo que começa com Get é serializado tambem

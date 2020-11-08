@@ -22,8 +22,8 @@ public class ItemPedido implements Serializable {
 	private Integer quantidade;
 	private Double preco;
 	
-	public ItemPedido() {};
-	
+	public ItemPedido() {}
+
 	public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
 		super();
 		id.setPedido(pedido);
@@ -104,11 +104,8 @@ public class ItemPedido implements Serializable {
 			return false;
 		ItemPedido other = (ItemPedido) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+			return other.id == null;
+		} else return id.equals(other.id);
 	}
 
 	@Override

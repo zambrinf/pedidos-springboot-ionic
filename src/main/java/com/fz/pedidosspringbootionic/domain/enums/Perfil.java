@@ -5,10 +5,10 @@ public enum Perfil {
 	ADMIN(1, "ROLE_ADMIN"),
 	CLIENTE(2, "ROLE_CLIENTE");
 
-	private int cod;
-	private String descricao;
+	private final int cod;
+	private final String descricao;
 
-	private Perfil(int cod, String descricao) {
+	Perfil(int cod, String descricao) {
 		this.cod = cod;
 		this.descricao = descricao;
 	}
