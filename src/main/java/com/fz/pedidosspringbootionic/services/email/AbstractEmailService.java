@@ -1,5 +1,6 @@
 package com.fz.pedidosspringbootionic.services.email;
 
+import com.fz.pedidosspringbootionic.domain.Cliente;
 import com.fz.pedidosspringbootionic.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,16 @@ public abstract class AbstractEmailService implements EmailService {
         message.setTo(recipient);
         message.setSubject("Confirmação do Pedido: " + pedido.getId());
         message.setText(pedido.toString());
+        sendEmail(message);
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(sender);
+        message.setTo(cliente.getEmail());
+        message.setSubject("Recuperação de Senha");
+        message.setText("Nova senha: " + newPassword);
         sendEmail(message);
     }
 
