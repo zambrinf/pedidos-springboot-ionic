@@ -8,8 +8,13 @@ import com.fz.pedidosspringbootionic.domain.*;
 import com.fz.pedidosspringbootionic.domain.enums.EstadoPagamento;
 import com.fz.pedidosspringbootionic.repositories.ItemPedidoRepository;
 import com.fz.pedidosspringbootionic.repositories.PagamentoRepository;
+import com.fz.pedidosspringbootionic.security.UserSS;
 import com.fz.pedidosspringbootionic.services.email.EmailService;
+import com.fz.pedidosspringbootionic.services.exceptions.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fz.pedidosspringbootionic.repositories.PedidoRepository;
@@ -74,4 +79,16 @@ public class PedidoService {
 		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
+
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserSevice.getAuthenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction),
+				orderBy);
+		Cliente cliente = clienteService.findById(user.getId());
+		return repository.findByCliente(cliente, pageRequest);
+	}
+
 }
