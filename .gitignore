@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### PROPERTIES ###
-!**/src/resources/application.properties
-!**/src/resources/application-dev.properties
-!**/src/resources/application-test.properties
-!**/src/resources/application-prod.properties
+/src/resources/application.properties
+/src/resources/application-dev.properties
+/src/resources/application-test.properties
+/src/resources/application-prod.properties
